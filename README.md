@@ -5,6 +5,8 @@ Based on https://github.com/fuzzysteve/CREST-Market-Viewer
 
 This app allow you to simply compare main commercial hubs into a eve-like interface
 
+A demo is available here : http://eve.netcap.fr/
+
 # Requirement
 
 A server, php and an eve online account.
