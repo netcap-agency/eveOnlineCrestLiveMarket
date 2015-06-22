@@ -16,8 +16,8 @@ The generated Client ID should be paste line 202 in js/app.js
 # Installation
 
 Edit js/app.js
-	- Add your domain name line 177 in var siteURL = "";
-	- Add your clientID line 202 in var clientId = "";
+* Add your domain name line 177 in var siteURL = "";
+* Add your clientID line 202 in var clientId = "";
 Upload the files to your server. Take care to let xdr-min.js on the root of the project in order to allow cross domain request.
 The app also include a simple debug tool in order to perform debug into the eve online browser. This function can be a lot better but is sufficient to me.
 
