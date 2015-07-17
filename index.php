@@ -25,18 +25,57 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 
 	}
 }
+$systems = json_decode(file_get_contents(dirname(__FILE__).'/config.json'), true);
 ?>
 <!DOCTYPE html>
+<!--
+_______________________________________________________________
+|                                                             |
+|                     .ed"""" """$$$$be.                      |
+|                   -"           ^""**$$$e.                   | 
+|                 ."                   '$$$c                  |
+|                /                      "4$$b                 |
+|               d  3                      $$$$                |
+|               $  *                   .$$$$$$                |
+|              .$  ^c           $$$$$e$$$$$$$$.               |
+|              d$L  4.         4$$$$$$$$$$$$$$b               |
+|              $$$$b ^ceeeee.  4$$ECL.F*$$$$$$$               |
+|  e$""=.      $$$$P d$$$$F $ $$$$$$$$$- $$$$$$               |
+| z$$b. ^c     3$$$F "$$$$b   $"$$$$$$$  $$$$*"      .=""$c   |
+|4$$$$L        $$P"  "$$b   .$ $$$$$...e$$        .=  e$$$.   |
+|^*$$$$$c  %..   *c    ..    $$ 3$$$$$$$$$$eF     zP  d$$$$$  |
+|  "**$$$ec   "   %ce""    $$$  $$$$$$$$$$*    .r" =$$$$P""   |
+|        "*$b.  "c  *$e.    *** d$$$$$"L$$    .d"  e$$***"    |
+|          ^*$$c ^$c $$$      4J$$$$$% $$$ .e*".eeP"          |
+|             "$$$$$$"'$=e....$*$$**$cz$$" "..d$*"            |
+|               "*$$$  *=%4.$ L L$ P3$$$F $$$P"               |
+|                  "$   "%*ebJLzb$e$$$$$b $P"                 |
+|                    %..      4$$$$$$$$$$ "                   |
+|                     $$$e   z$$$$$$$$$$%                     |
+|                      "*$c  "$$$$$$$P"                       |
+|                       ."""*$$$$$$$$bc                       |
+|                    .-"    .$***$$$"""*e.                    |
+|                 .-"    .e$"     "*$c  ^*b.                  |
+|          .=*""""    .e$*"          "*bc  "*$e..             |
+|        .$"        .z*"               ^*$e.   "*****e.       |
+|        $$ee$c   .d"                     "*$.        3.      |
+|        ^*$E")$..$"                         *   .ee==d%      |
+|           $.d$$$*                           *  J$$$e*       |
+|            """""                              "$$$"         |
+|                                                             |
+|__________________________Wanted Bang________________________|
+
+-->
 <html lang="en">
 <head>
-	<title>Iska.re</title>
+	<title>Hub.isk</title>
+	<meta name="description" content="Hub.isk"/>
 	<meta charset="utf-8"/>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/app.css"/>
 	<link rel="icon" type="image/png" href="favicon.png" />
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="xdr-min.js"></script>
-	<script src="js/app.js?v=1"></script>
 	<script type="text/javascript">
 		function initEve(){
 			if(typeof(CCPEVE) == 'undefined'){
@@ -47,7 +86,31 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 				CCPEVE.requestTrust(redirectUri);
 			}
 		}
+		<?php 
+		$javascript_region = array();
+		$javascript_station = array();
+		$javascript_key = array();
+		foreach($systems as $system => $info){
+			$javascript_region[] = $info['region'];
+			$javascript_station[] = $info['id'];
+			$javascript_key[] = "'".$system."'";
+		}
+		?>
+		
+		/*
+		*	Region to fetch
+		*/
+		var wantedRegion = [<?php echo implode(', ', $javascript_region);?>];
+		/*
+		*	Station to fetch
+		*/
+		var wantedStation = [<?php echo implode(', ', $javascript_station);?>];
+		/*
+		*	Shortname
+		*/
+		var dirtyKey = [<?php echo implode(', ', $javascript_key);?>];
 	</script>
+	<script src="js/app.js?v=1"></script>
 </head>
 <body onload="initEve()">
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -143,40 +206,46 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 					<div role="tabpanel">
 					
 						<ul class="nav nav-tabs mainTabs" role="tablist">
-							<li role="presentation" class="active"><a href="#jita" title="Jita" aria-controls="jita" role="tab" data-toggle="tab">Jita</a></li>
-							<li role="presentation"><a href="#amarr" title="Amarr" aria-controls="amarr" role="tab" data-toggle="tab">Amarr</a></li>
-							<li role="presentation"><a href="#rens" aria-controls="rens" role="tab" data-toggle="tab">Rens</a></li>
-							<li role="presentation"><a href="#dodixie" aria-controls="dodixie" role="tab" data-toggle="tab">Dodixie</a></li>
-							<li role="presentation"><a href="#hek" aria-controls="hek" role="tab" data-toggle="tab">Hek</a></li>
+							<?php 
+							foreach($systems as $system => $info){
+							?>
+							<li role="presentation"<?php if($system == 'jita'){echo ' class="active"';}?>><a href="#<?php echo $system;?>" title="<?php echo $info['shortname'];?>" aria-controls="<?php echo $system;?>" role="tab" data-toggle="tab"><?php echo $info['shortname'];?></a></li>
+							<?php
+							}
+							?>
 							<!---
 							<li role="presentation"><a class="custom-marketplace" href="#custom" aria-controls="custom" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-plus"></i></a></li>
-							<li class="pull-right" role="presentation"><a href="#all_in_one" aria-controls="all_in_one" role="tab" data-toggle="tab">OnePage <sup>beta</sup></a></li>
 							-->
+							<li class="pull-right" role="presentation"><a href="#all_in_one" aria-controls="all_in_one" role="tab" data-toggle="tab">OnePage <sup>beta</sup></a></li>
 						</ul>
 						<div class="tab-content mainContentTabs">
 					
-							<!-- jita -->
-							<div role="tabpanel" class="tab-pane fade in active" id="jita">
+							<?php 
+							foreach($systems as $system => $info){
+							?>
+							<!-- <?php echo $system;?> -->
+							<div role="tabpanel" class="tab-pane fade<?php if($system == 'jita'){echo 'in active';};?>" id="<?php echo $system;?>">
 								<!-- tabs left -->
 								<div class="tabbable">
 									<div class="row">
 										<div class="col-md-2 tabs-left">
 										
 											<ul class="nav nav-tabs sideTabs">
-												<li role="presentation" class="active"><a href="#a_sell" title="Sell orders" aria-controls="a_sell" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-euro"></i> Sell orders</a></li>
-												<li role="presentation"><a href="#a_buy" title="Buy orders" aria-controls="a_buy" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-barcode"></i> Buy orders</a></li>
-												<li role="presentation"><a href="#a_history" title="History" aria-controls="a_history" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-stats"></i> History</a></li>
+												<li role="presentation" class="active"><a href="#<?php echo $info['key'];?>_sell" title="Sell orders" aria-controls="<?php echo $info['key'];?>_sell" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-euro"></i> Sell orders</a></li>
+												<li role="presentation"><a href="#<?php echo $info['key'];?>_buy" title="Buy orders" aria-controls="<?php echo $info['key'];?>_buy" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-barcode"></i> Buy orders</a></li>
+												<li role="presentation"><a href="#<?php echo $info['key'];?>_history" title="History" aria-controls="<?php echo $info['key'];?>_history" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-stats"></i> History</a></li>
+												<li role="presentation"><a href="#<?php echo $info['key'];?>_volatility" title="Volatility" aria-controls="<?php echo $info['key'];?>_volatility" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-indent-right"></i> Volatility</a></li>
 											</ul>
 										
 										</div>
 										<div class="col-md-10 contentTabs">
-											<h2 data-id="60003760" class="a_system_name setDestination">Jita IV - Moon 4 - Caldari Navy Assembly Plant</h2>
-											<input type="hidden" value="10000002" id="a_region"/>
-											<input type="hidden" value="30000142" id="a_system"/>
+											<h2 data-id="<?php echo $info['id'];?>" class="<?php echo $info['key'];?>_system_name setDestination"><?php echo $info['name'];?></h2>
+											<input type="hidden" value="<?php echo $info['region'];?>" id="<?php echo $info['key'];?>_region"/>
+											<input type="hidden" value="<?php echo $info['system'];?>" id="<?php echo $info['key'];?>_system"/>
 											<div class="tab-content">
 												<!-- items sell order -->
-												<div role="tabpanel" class="tab-pane fade in active" id="a_sell">
-													<table id="a_sell_table" class="table sortme sortPrice table-striped">
+												<div role="tabpanel" class="tab-pane fade in active" id="<?php echo $info['key'];?>_sell">
+													<table id="<?php echo $info['key'];?>_sell_table" class="table sortme sortPrice table-striped">
 														<thead>
 															<tr>
 																<th>Price</th>
@@ -184,7 +253,7 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 																<th>Expires in</th>
 															</tr>
 														</thead>
-														<tbody class="a_sell_show">
+														<tbody class="<?php echo $info['key'];?>_sell_show">
 														</tbody>
 													</table>
 													<div class="container-loader">
@@ -192,8 +261,8 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 												</div>
 												<!-- /items sell order -->
 												<!-- items buy order -->
-												<div role="tabpanel" class="tab-pane fade" id="a_buy">
-													<table id="a_buy_table" class="table sortme sortPrice table-striped">
+												<div role="tabpanel" class="tab-pane fade" id="<?php echo $info['key'];?>_buy">
+													<table id="<?php echo $info['key'];?>_buy_table" class="table sortme sortPrice table-striped">
 														<thead>
 															<tr>
 																<th>Price</th>
@@ -202,7 +271,7 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 																<th>Expiration</th>
 															</tr>
 														</thead>
-														<tbody class="a_buy_show">
+														<tbody class="<?php echo $info['key'];?>_buy_show">
 														</tbody>
 													</table>
 													<div class="container-loader">
@@ -210,8 +279,8 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 												</div>
 												<!-- /items buy order -->
 												<!-- items history -->
-												<div role="tabpanel" class="tab-pane fade" id="a_history">
-													<table id="a_history_table" class="table sortme sortPrice table-history table-striped">
+												<div role="tabpanel" class="tab-pane fade" id="<?php echo $info['key'];?>_history">
+													<table id="<?php echo $info['key'];?>_history_table" class="table sortme sortPrice table-history table-striped">
 														<thead>
 															<tr>
 																<th>Date</th>
@@ -222,477 +291,250 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 																<th>Avg</th>
 															</tr>
 														</thead>
-														<tbody class="a_history_show">
+														<tbody class="<?php echo $info['key'];?>_history_show">
 														</tbody>
 													</table>
 													<div class="container-loader">
 													</div>
 												</div>
 												<!-- /items history -->
+												<!-- items volatility -->
+												<div role="tabpanel" class="tab-pane fade" id="<?php echo $info['key'];?>_volatility">
+													<div role="tabpanel">
+														<ul class="nav nav-tabs volatilityTabs">
+															<li role="presentation" class="active"><a href="#<?php echo $info['key'];?>_volatility_10days" title="Volatility on 10 days" aria-controls="<?php echo $info['key'];?>_volatility_10days" role="tab" data-toggle="tab">10 Days</a></li>
+															<li role="presentation"><a href="#<?php echo $info['key'];?>_volatility_1month" title="Volatility on 1 month" aria-controls="<?php echo $info['key'];?>_volatility_1month" role="tab" data-toggle="tab">1 Month</a></li>
+															<li role="presentation"><a href="#<?php echo $info['key'];?>_volatility_3months" title="Volatility on 3 months" aria-controls="<?php echo $info['key'];?>_volatility_3months" role="tab" data-toggle="tab">3 Months</a></li>
+															<li role="presentation"><a href="#<?php echo $info['key'];?>_volatility_1year" title="Volatility on 1 year" aria-controls="<?php echo $info['key'];?>_volatility_1year" role="tab" data-toggle="tab">1 Year</a></li>
+														</ul>
+													</div>
+													<div class="tab-content volatilityContentTabs">
+														<div role="tabpanel" class="tab-pane fade in active" id="<?php echo $info['key'];?>_volatility_10days">
+															<div class="volatility_container">
+																<div class="row">
+																	<div class="col-md-4 volatility_graph">
+																		<div class="volatility-bar"></div><div class="volatility-bar-median" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title=""></div>
+																		<span class="volatility-high volatility-indicator"></span>
+																		
+																		<span class="volatility-min volatility-indicator"></span>
+																	</div>
+																	<div class="col-md-8 volatility_data">
+																		<h4>Average orders : <span class="volatility-orders"></span></h4>
+																		<h4>Average volume : <span class="volatility-volume"></span></h4>
+																	</div>
+																</div>
+															</div>
+															<div class="container-loader">
+															</div>
+														</div>
+														<div role="tabpanel" class="tab-pane fade" id="<?php echo $info['key'];?>_volatility_1month">
+															<div class="volatility_container">
+																<div class="row">
+																	<div class="col-md-4 volatility_graph">
+																		<div class="volatility-bar"></div><div class="volatility-bar-median" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title=""></div>
+																		<span class="volatility-high volatility-indicator"></span>
+																		
+																		<span class="volatility-min volatility-indicator"></span>
+																	</div>
+																	<div class="col-md-8 volatility_data">
+																		<h4>Average orders : <span class="volatility-orders"></span></h4>
+																		<h4>Average volume : <span class="volatility-volume"></span></h4>
+																	</div>
+																</div>
+															</div>
+															<div class="container-loader">
+															</div>
+														</div>
+														<div role="tabpanel" class="tab-pane fade" id="<?php echo $info['key'];?>_volatility_3months">
+															<div class="volatility_container">
+																<div class="row">
+																	<div class="col-md-4 volatility_graph">
+																		<div class="volatility-bar"></div><div class="volatility-bar-median" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title=""></div>
+																		<span class="volatility-high volatility-indicator"></span>
+																		
+																		<span class="volatility-min volatility-indicator"></span>
+																	</div>
+																	<div class="col-md-8 volatility_data">
+																		<h4>Average orders : <span class="volatility-orders"></span></h4>
+																		<h4>Average volume : <span class="volatility-volume"></span></h4>
+																	</div>
+																</div>
+															</div>
+															<div class="container-loader">
+															</div>
+														</div>
+														<div role="tabpanel" class="tab-pane fade" id="<?php echo $info['key'];?>_volatility_1year">
+															<div class="volatility_container">
+																<div class="row">
+																	<div class="col-md-4 volatility_graph">
+																		<div class="volatility-bar"></div><div class="volatility-bar-median" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title=""></div>
+																		<span class="volatility-high volatility-indicator"></span>
+																		
+																		<span class="volatility-min volatility-indicator"></span>
+																	</div>
+																	<div class="col-md-8 volatility_data">
+																		<h4>Average orders : <span class="volatility-orders"></span></h4>
+																		<h4>Average volume : <span class="volatility-volume"></span></h4>
+																	</div>
+																</div>
+															</div>
+															<div class="container-loader">
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- /items volatility -->
 											</div>
 										</div>
 									</div>
 								</div>
 								<!-- /tabs -->
 							</div>
-							<!-- /jita -->
-							
-							
-							<!-- amarr -->
-							<div role="tabpanel" class="tab-pane fade" id="amarr">
-								<!-- tabs left -->
-								<div class="tabbable">
-									<div class="row">
-										<div class="col-md-2 tabs-left">
-											<ul class="nav nav-tabs sideTabs">
-												<li role="presentation" class="active"><a href="#b_sell" title="Sell orders" aria-controls="b_sell" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-euro"></i> Sell orders</a></li>
-												<li role="presentation"><a href="#b_buy" title="Buy orders" aria-controls="b_buy" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-barcode"></i> Buy orders</a></li>
-												<li role="presentation"><a href="#b_history" title="History" aria-controls="b_history" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-stats"></i> History</a></li>
-											</ul>
-										</div>
-										<div class="col-md-10 contentTabs">
-											<h2 data-id="60008494" class="b_system_name setDestination">Amarr VIII (Oris) - Emperor Family Academy</h2>
-											<input type="hidden" value="10000043" id="b_region"/>
-											<input type="hidden" value="30002187" id="b_system"/>
-											<div class="tab-content">
-												<!-- items sell order -->
-												<div role="tabpanel" class="tab-pane fade in active" id="b_sell">
-													<table id="b_sell_table" class="table sortme sortPrice table-striped">
-														<thead>
-															<tr>
-																<th>Price</th>
-																<th>Quantity</th>
-																<th>Expires in</th>
-															</tr>
-														</thead>
-														<tbody class="b_sell_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items sell order -->
-												<!-- items buy order -->
-												<div role="tabpanel" class="tab-pane fade" id="b_buy">
-													<table id="b_buy_table" class="table sortme sortPrice table-striped">
-														<thead>
-															<tr>
-																<th>Price</th>
-																<th>Volume</th>
-																<th>Min Volume</th>
-																<th>Expiration</th>
-															</tr>
-														</thead>
-														<tbody class="b_buy_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items buy order -->
-												<!-- items history -->
-												<div role="tabpanel" class="tab-pane fade" id="b_history">
-													<table id="b_history_table" class="table sortme sortPrice table-history table-striped">
-														<thead>
-															<tr>
-																<th>Date</th>
-																<th>Orders</th>
-																<th>Quantity</th>
-																<th>Low</th>
-																<th>High</th>
-																<th>Avg</th>
-															</tr>
-														</thead>
-														<tbody class="b_history_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items history -->
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- /tabs -->
-							</div>
-							<!-- /amarr -->
-							
-							
-							<!-- rens -->
-							<div role="tabpanel" class="tab-pane fade" id="rens">
-								<!-- tabs left -->
-								<div class="tabbable">
-									<div class="row">
-										<div class="col-md-2 tabs-left">
-											<ul class="nav nav-tabs sideTabs">
-												<li role="presentation" class="active"><a href="#c_sell" title="Sell orders" aria-controls="c_sell" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-euro"></i> Sell orders</a></li>
-												<li role="presentation"><a href="#c_buy" title="Buy orders" aria-controls="c_buy" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-barcode"></i> Buy orders</a></li>
-												<li role="presentation"><a href="#c_history" title="History" aria-controls="c_history" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-stats"></i> History</a></li>
-											</ul>
-										</div>
-										<div class="col-md-10 contentTabs">
-											<h2 data-id="60004588" class="c_system_name setDestination">Rens VI - Moon 8 - Brutor Tribe Treasury</h2>
-											<input type="hidden" value="10000030" id="c_region"/>
-											<input type="hidden" value="30002510" id="c_system"/>
-											<div class="tab-content">
-												<!-- items sell order -->
-												<div role="tabpanel" class="tab-pane fade in active" id="c_sell">
-													<table id="c_sell_table" class="table sortme sortPrice table-striped">
-														<thead>
-															<tr>
-																<th>Price</th>
-																<th>Quantity</th>
-																<th>Expires in</th>
-															</tr>
-														</thead>
-														<tbody class="c_sell_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items sell order -->
-												<!-- items buy order -->
-												<div role="tabpanel" class="tab-pane fade" id="c_buy">
-													<table id="c_buy_table" class="table sortme sortPrice table-striped">
-														<thead>
-															<tr>
-																<th>Price</th>
-																<th>Volume</th>
-																<th>Min Volume</th>
-																<th>Expiration</th>
-															</tr>
-														</thead>
-														<tbody class="c_buy_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items buy order -->
-												<!-- items history -->
-												<div role="tabpanel" class="tab-pane fade" id="c_history">
-													<table id="c_history_table" class="table sortme sortPrice table-history table-striped">
-														<thead>
-															<tr>
-																<th>Date</th>
-																<th>Orders</th>
-																<th>Quantity</th>
-																<th>Low</th>
-																<th>High</th>
-																<th>Avg</th>
-															</tr>
-														</thead>
-														<tbody class="c_history_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items history -->
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- /tabs -->
-							</div>
-							<!-- /rens -->
-							
-							
-							<!-- dodixie -->
-							<div role="tabpanel" class="tab-pane fade" id="dodixie">
-								<!-- tabs left -->
-								<div class="tabbable">
-									<div class="row">
-										<div class="col-md-2 tabs-left">
-											<ul class="nav nav-tabs sideTabs">
-												<li role="presentation" class="active"><a href="#d_sell" title="Sell orders" aria-controls="d_sell" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-euro"></i> Sell orders</a></li>
-												<li role="presentation"><a href="#d_buy" title="Buy orders" aria-controls="d_buy" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-barcode"></i> Buy orders</a></li>
-												<li role="presentation"><a href="#d_history" title="History" aria-controls="d_history" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-stats"></i> History</a></li>
-											</ul>
-										</div>
-										<div class="col-md-10 contentTabs">
-											<h2 data-id="60011866" class="d_system_name setDestination">Dodixie IX - Moon 20 - Federation Navy Assembly Plant</h2>
-											<input type="hidden" value="10000032" id="d_region"/>
-											<input type="hidden" value="30002659" id="d_system"/>
-											<div class="tab-content">
-												<!-- items sell order -->
-												<div role="tabpanel" class="tab-pane fade in active" id="d_sell">
-													<table id="d_sell_table" class="table sortme sortPrice table-striped">
-														<thead>
-															<tr>
-																<th>Price</th>
-																<th>Quantity</th>
-																<th>Expires in</th>
-															</tr>
-														</thead>
-														<tbody class="d_sell_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items sell order -->
-												<!-- items buy order -->
-												<div role="tabpanel" class="tab-pane fade" id="d_buy">
-													<table id="d_buy_table" class="table sortme sortPrice table-striped">
-														<thead>
-															<tr>
-																<th>Price</th>
-																<th>Volume</th>
-																<th>Min Volume</th>
-																<th>Expiration</th>
-															</tr>
-														</thead>
-														<tbody class="d_buy_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items buy order -->
-												<!-- items history -->
-												<div role="tabpanel" class="tab-pane fade" id="d_history">
-													<table id="d_history_table" class="table sortme sortPrice table-history table-striped">
-														<thead>
-															<tr>
-																<th>Date</th>
-																<th>Orders</th>
-																<th>Quantity</th>
-																<th>Low</th>
-																<th>High</th>
-																<th>Avg</th>
-															</tr>
-														</thead>
-														<tbody class="d_history_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items history -->
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- /tabs -->
-							</div>
-							<!-- /dodixie -->
-							
-							
-							<!-- hek -->
-							<div role="tabpanel" class="tab-pane fade" id="hek">
-								<!-- tabs left -->
-								<div class="tabbable">
-									<div class="row">
-										<div class="col-md-2 tabs-left">
-											<ul class="nav nav-tabs sideTabs">
-												<li role="presentation" class="active"><a href="#e_sell" title="Sell orders" aria-controls="e_sell" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-euro"></i> Sell orders</a></li>
-												<li role="presentation"><a href="#e_buy" title="Buy orders" aria-controls="e_buy" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-barcode"></i> Buy orders</a></li>
-												<li role="presentation"><a href="#e_history" title="History" aria-controls="e_history" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-stats"></i> History</a></li>
-											</ul>
-										</div>
-										<div class="col-md-10 contentTabs">
-											<h2 data-id="60005686" class="e_system_name setDestination">Hek VIII - Moon 12 - Boundless Creation Factory</h2>
-											<input type="hidden" value="10000042" id="e_region"/>
-											<input type="hidden" value="30002053" id="e_system"/>
-											<div class="tab-content">
-												<!-- items sell order -->
-												<div role="tabpanel" class="tab-pane fade in active" id="e_sell">
-													<table id="e_sell_table" class="table sortme sortPrice table-striped">
-														<thead>
-															<tr>
-																<th>Price</th>
-																<th>Quantity</th>
-																<th>Expires in</th>
-															</tr>
-														</thead>
-														<tbody class="e_sell_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items sell order -->
-												<!-- items buy order -->
-												<div role="tabpanel" class="tab-pane fade" id="e_buy">
-													<table id="e_buy_table" class="table sortme sortPrice table-striped">
-														<thead>
-															<tr>
-																<th>Price</th>
-																<th>Volume</th>
-																<th>Min Volume</th>
-																<th>Expiration</th>
-															</tr>
-														</thead>
-														<tbody class="e_buy_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items buy order -->
-												<!-- items history -->
-												<div role="tabpanel" class="tab-pane fade" id="e_history">
-													<table id="e_history_table" class="table sortme sortPrice table-history table-striped">
-														<thead>
-															<tr>
-																<th>Date</th>
-																<th>Orders</th>
-																<th>Quantity</th>
-																<th>Low</th>
-																<th>High</th>
-																<th>Avg</th>
-															</tr>
-														</thead>
-														<tbody class="e_history_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items history -->
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- /tabs -->
-							</div>
-							<!-- /hek -->
-							
-							
-							<!-- custom -->
-							<div role="tabpanel" class="tab-pane fade" id="custom">
-								<!-- tabs left -->
-								<div class="tabbable tabs-left">
-									<div class="row">
-										<div class="col-md-2 tabs-left">
-											<ul class="nav nav-tabs sideTabs">
-												<li role="presentation" class="active"><a href="#f_sell" title="Sell orders" aria-controls="f_sell" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-euro"></i> Sell orders</a></li>
-												<li role="presentation"><a href="#f_buy" title="Buy orders" aria-controls="f_buy" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-barcode"></i> Buy orders</a></li>
-												<li role="presentation"><a href="#f_history" title="History" aria-controls="f_history" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-stats"></i> History</a></li>
-											</ul>
-										</div>
-										<div class="col-md-10 contentTabs">
-											<h2  class="invert-me"><span class="f_system_name">Choisissez un système</span> <a href="#" class="pull-left toggle btn-xs btn-default toggle-system-f"><i class="glyphicon glyphicon-pencil"></i></a></h2>
-											<div class="hide-me">
-												<div class="input-group load-system-name">
-													<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-													<input type="text" placeholder="Tapez ici le nom du système" data-system="f" class="getStationName form-control typeahead"/>
-													<span class="input-group-btn">
-														<a href="#" class="btn cancel-toggle btn-default"><i class="glyphicon glyphicon-remove"></i></a>
-													</span>
-												</div>
-											</div>
-											<input type="hidden" value="" id="f_region"/>
-											<input type="hidden" value="" id="f_system"/>
-											<div class="tab-content">
-												<!-- items sell order -->
-												<div role="tabpanel" class="tab-pane fade in active" id="f_sell">
-													<table id="f_sell_table" class="table sortme sortPrice table-striped">
-														<thead>
-															<tr>
-																<th>Price</th>
-																<th>Quantity</th>
-																<th>Expires in</th>
-															</tr>
-														</thead>
-														<tbody class="f_sell_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items sell order -->
-												<!-- items buy order -->
-												<div role="tabpanel" class="tab-pane fade" id="f_buy">
-													<table id="f_buy_table" class="table sortme sortPrice table-striped">
-														<thead>
-															<tr>
-																<th>Price</th>
-																<th>Volume</th>
-																<th>Min Volume</th>
-																<th>Expiration</th>
-															</tr>
-														</thead>
-														<tbody class="f_buy_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items buy order -->
-												<!-- items history -->
-												<div role="tabpanel" class="tab-pane fade" id="f_history">
-													<table id="f_history_table" class="table sortme sortPrice table-history table-striped">
-														<thead>
-															<tr>
-																<th>Date</th>
-																<th>Orders</th>
-																<th>Quantity</th>
-																<th>Low</th>
-																<th>High</th>
-																<th>Avg</th>
-															</tr>
-														</thead>
-														<tbody class="f_history_show">
-														</tbody>
-													</table>
-													<div class="container-loader">
-													</div>
-												</div>
-												<!-- /items history -->
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- /tabs -->
-							</div>
-							<!-- /custom -->
-							
-							
+							<!-- /<?php echo $system;?> -->
+							<?php
+							}
+							?>
 							<!-- One page -->
 							<div role="tabpanel" class="tab-pane fade" id="all_in_one">
-								<h2>One page to rule them all <sup>beta</sup></h2>
 								<!-- tabs left -->
-								<div class="tabbable tabs-left">
-									<ul class="nav nav-tabs">
-										<li role="presentation" class="active"><a href="#all_sell" title="Sell orders" aria-controls="all_sell" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-euro"></i></a></li>
-										<li role="presentation"><a href="#all_buy" title="Buy orders" aria-controls="all_buy" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-barcode"></i></a></li>
-									</ul>
-									<div class="tab-content">
-										<!-- items sell order -->
-										<div role="tabpanel" class="tab-pane fade in active" id="all_sell">
-											<table id="all_sell_table" class="table sortme sortPrice table-striped">
-												<thead>
-													<tr>
-														<th>Price</th>
-														<th>Quantity</th>
-														<th>Expires in</th>
-													</tr>
-												</thead>
-												<tbody class="all_sell_show">
-												</tbody>
-											</table>
+								<div class="tabbable">
+									<div class="row">
+										<div class="col-md-2 tabs-left">
+										
+											<ul class="nav nav-tabs sideTabs">
+												<li role="presentation" class="active"><a href="#all_sell" title="Sell orders" aria-controls="all_sell" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-euro"></i> Sell orders</a></li>
+												<li role="presentation"><a href="#all_buy" title="Buy orders" aria-controls="all_buy" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-barcode"></i> Buy orders</a></li>
+												<li role="presentation"><a href="#all_volatility" title="Volatility" aria-controls="all_volatility" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-indent-right"></i> Volatility</a></li>
+											</ul>
 										</div>
-										<!-- /items sell order -->
-										<!-- items buy order -->
-										<div role="tabpanel" class="tab-pane fade" id="all_buy">
-											<table id="all_buy_table" class="table sortme sortPrice table-striped">
-												<thead>
-													<tr>
-														<th>Price</th>
-														<th>Volume</th>
-														<th>Min Volume</th>
-														<th>Expiration</th>
-													</tr>
-												</thead>
-												<tbody class="all_buy_show">
-												</tbody>
-											</table>
+										<div class="col-md-10 contentTabs">
+											<h2>OnePage <sup>beta</sup></h2>
+											<div class="tab-content">
+												<!-- items sell order -->
+												<div role="tabpanel" class="tab-pane fade in active" id="all_sell">
+													<table id="all_sell_table" class="table sortme sortPrice table-striped">
+														<thead>
+															<tr>
+																<th>Station</th>
+																<th>Price</th>
+																<th>Quantity</th>
+																<th>Expires in</th>
+															</tr>
+														</thead>
+														<tbody class="all_sell_show">
+														</tbody>
+													</table>
+													<div class="container-loader">
+													</div>
+												</div>
+												<!-- /items sell order -->
+												<!-- items buy order -->
+												<div role="tabpanel" class="tab-pane fade" id="all_buy">
+													<table id="all_buy_table" class="table sortme sortPrice table-striped">
+														<thead>
+															<tr>
+																<th>Station</th>
+																<th>Price</th>
+																<th>Volume</th>
+																<th>Min Volume</th>
+																<th>Expiration</th>
+															</tr>
+														</thead>
+														<tbody class="all_buy_show">
+														</tbody>
+													</table>
+													<div class="container-loader">
+													</div>
+												</div>
+												<!-- /items buy order -->
+												<!-- items volatility -->
+												<div role="tabpanel" class="tab-pane fade" id="all_volatility">
+													<div role="tabpanel">
+														<ul class="nav nav-tabs volatilityTabs">
+															<li role="presentation" class="active"><a href="#all_volatility_10days" title="Volatility on 10 days" aria-controls="all_volatility_10days" role="tab" data-toggle="tab">10 Days</a></li>
+															<li role="presentation"><a href="#all_volatility_1month" title="Volatility on 1 month" aria-controls="all_volatility_1month" role="tab" data-toggle="tab">1 Month</a></li>
+															<li role="presentation"><a href="#all_volatility_3months" title="Volatility on 3 months" aria-controls="all_volatility_3months" role="tab" data-toggle="tab">3 Months</a></li>
+															<li role="presentation"><a href="#all_volatility_1year" title="Volatility on 1 year" aria-controls="all_volatility_1year" role="tab" data-toggle="tab">1 Year</a></li>
+														</ul>
+													</div>
+													<div class="tab-content volatilityContentTabs">
+														<div role="tabpanel" class="tab-pane fade in active" id="all_volatility_10days">
+															<div class="volatility_container">
+																<div class="row">
+																	<div class="col-md-4 volatility_graph">
+																		<div class="volatility-bar"></div><div class="volatility-bar-median" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title=""></div>
+																		<span class="volatility-high volatility-indicator"></span>
+																		
+																		<span class="volatility-min volatility-indicator"></span>
+																	</div>
+																	<div class="col-md-8 volatility_data">
+																		<h4>Average orders : <span class="volatility-orders"></span></h4>
+																		<h4>Average volume : <span class="volatility-volume"></span></h4>
+																	</div>
+																</div>
+															</div>
+															<div class="container-loader">
+															</div>
+														</div>
+														<div role="tabpanel" class="tab-pane fade" id="all_volatility_1month">
+															<div class="volatility_container">
+																<div class="row">
+																	<div class="col-md-4 volatility_graph">
+																		<div class="volatility-bar"></div><div class="volatility-bar-median" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title=""></div>
+																		<span class="volatility-high volatility-indicator"></span>
+																		
+																		<span class="volatility-min volatility-indicator"></span>
+																	</div>
+																	<div class="col-md-8 volatility_data">
+																		<h4>Average orders : <span class="volatility-orders"></span></h4>
+																		<h4>Average volume : <span class="volatility-volume"></span></h4>
+																	</div>
+																</div>
+															</div>
+															<div class="container-loader">
+															</div>
+														</div>
+														<div role="tabpanel" class="tab-pane fade" id="all_volatility_3months">
+															<div class="volatility_container">
+																<div class="row">
+																	<div class="col-md-4 volatility_graph">
+																		<div class="volatility-bar"></div><div class="volatility-bar-median" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title=""></div>
+																		<span class="volatility-high volatility-indicator"></span>
+																		
+																		<span class="volatility-min volatility-indicator"></span>
+																	</div>
+																	<div class="col-md-8 volatility_data">
+																		<h4>Average orders : <span class="volatility-orders"></span></h4>
+																		<h4>Average volume : <span class="volatility-volume"></span></h4>
+																	</div>
+																</div>
+															</div>
+															<div class="container-loader">
+															</div>
+														</div>
+														<div role="tabpanel" class="tab-pane fade" id="all_volatility_1year">
+															<div class="volatility_container">
+																<div class="row">
+																	<div class="col-md-4 volatility_graph">
+																		<div class="volatility-bar"></div><div class="volatility-bar-median" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title=""></div>
+																		<span class="volatility-high volatility-indicator"></span>
+																		
+																		<span class="volatility-min volatility-indicator"></span>
+																	</div>
+																	<div class="col-md-8 volatility_data">
+																		<h4>Average orders : <span class="volatility-orders"></span></h4>
+																		<h4>Average volume : <span class="volatility-volume"></span></h4>
+																	</div>
+																</div>
+															</div>
+															<div class="container-loader">
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- /items volatility -->
+											</div>
 										</div>
-										<!-- /items buy order -->
 									</div>
 								</div>
 								<!-- /tabs -->
@@ -718,6 +560,19 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 			<img class="bgfade" src="img/4.jpg"/>
 		</div>
 	</div>
+	
+	<footer>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-8">
+					wantedBang&copy; <?php echo date('Y');?> | Data from <a href="https://zkillboard.com/">zkillboard</a> and <a href="https://public-crest.eveonline.com/">eveonline CREST API | Hub.isk source could be found on <a href="https://github.com/netcap-agency/eveOnlineCrestLiveMarket">github</a></a>
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-4">
+					<span class="pull-right">Fitting par <a href="http:/netcap.fr/">netcap</a></span>
+				</div>
+			</div>
+		</div>
+	</footer>
 
 </body>
 </html>

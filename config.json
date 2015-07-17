@@ -1,0 +1,42 @@
+{
+	"jita": {
+		"name": "Jita IV - Moon 4 - Caldari Navy Assembly Plant",
+		"shortname": "Jita",
+		"key": "jita",
+		"id": "60003760",
+		"region": "10000002",
+		"system": "30000142"
+	},
+	"amarr": {
+		"name": "Amarr VIII (Oris) - Emperor Family Academy",
+		"shortname": "Amarr",
+		"key": "amarr",
+		"id": "60008494",
+		"region": "10000043",
+		"system": "30002187"
+	},
+	"rens": {
+		"name": "Rens VI - Moon 8 - Brutor Tribe Treasury",
+		"shortname": "Rens",
+		"key": "rens",
+		"id": "60004588",
+		"region": "10000030",
+		"system": "30002510"
+	},
+	"dodixie": {
+		"name": "Dodixie IX - Moon 20 - Federation Navy Assembly Plant",
+		"shortname": "Dodixie",
+		"key": "dodixie",
+		"id": "60011866",
+		"region": "10000032",
+		"system": "30002659"
+	},
+	"hek": {
+		"name": "Hek VIII - Moon 12 - Boundless Creation Factory",
+		"shortname": "Hek",
+		"key": "hek",
+		"id": "60005686",
+		"region": "10000042",
+		"system": "30002053"
+	}
+}

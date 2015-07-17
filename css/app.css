@@ -7,8 +7,19 @@ body {
 	font-family: "evesans", Fallback, sans-serif;
 	font-size: 10pt;
 	padding-top: 60px;
-	padding-bottom: 20px;
+	padding-bottom: 0px;
 	background-color:#000;
+}
+
+footer {
+	padding: 10px 5px;
+	margin-top: 50px;
+	background-color: #181818;
+	border-top: 1px solid #090909;
+	color: #818181;
+	bottom: 0;
+	position: fixed;
+	width: 100%;
 }
 
 @media (max-width: 767px){
@@ -256,6 +267,62 @@ h2 {
 	padding: 7px 5px 6px;
 	color: #AE352B;
 }
+
+.volatility-bar {
+	width: 75px;
+	height: 250px;
+	display: block;
+	background-color: rgba(171, 171, 171, 0.33);
+	margin: 10px 0;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+	.volatility-bar:hover {
+		background-color: rgba(171, 171, 171, 0.66);
+	}
+	
+.volatility-bar-median {
+	height: 2px;
+	border-top: 2px solid #BDBDBD;
+	width: 75px;
+	position: absolute;
+	bottom: 0;
+}
+	
+.volatility-indicator {
+	position: absolute;
+	left: 0;
+	color: #ABABAB;
+}
+	
+	.volatility-high {
+		top: 0;
+		margin: 10px 0 0 100px;
+	}
+
+	.volatility-avg {
+		top: 0;
+		margin: 120px 0 0 100px;
+	}
+
+	.volatility-min {
+		bottom: 0;
+		margin: 0 0 8px 100px;
+	}
+	
+.volatility_data {
+
+}
+
+	.volatility_data h4 {
+		color: #ABABAB;
+	}
+		.volatility_data h4 span {
+		
+		}
+
 /*
 *	Background blur effet
 *	http://jordanhollinger.com/2014/01/29/css-gaussian-blur-behind-a-translucent-box/

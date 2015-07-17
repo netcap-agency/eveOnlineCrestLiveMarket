@@ -91,7 +91,6 @@ function removeTime(date){
 *	Init countdown
 */
 function initCountdown(id){
-
 	$(id).find('td.timeleft').each(function() {
 		var $this = $(this);
 		var finalDate = $this.html().replace('-', '/');
@@ -99,26 +98,40 @@ function initCountdown(id){
 			$this.html('<span class="hidden">'+finalDate+'</span>' +event.strftime('%Dd %Hh %Mm %Ss'));
 		});
 	});
+}
+/*
+*	Calculate median
+*/
+function getMedian(data){
+
+	var total = data.length;
+	var sum = 0;
+	$.each(data, function(i, item){
+	
+		sum += parseFloat(item);
+	
+	});
+	var median = parseFloat(sum) / parseFloat(total);
+	return median;
 
 }
 /*!
- * Bootstrap v3.3.4 (http://getbootstrap.com)
+ * Bootstrap v3.3.5 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=3d739dfe9c483e9e64e6)
- * Config saved to config.json and https://gist.github.com/3d739dfe9c483e9e64e6
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=a346800846ed0feac82e)
+ * Config saved to config.json and https://gist.github.com/a346800846ed0feac82e
  */
-if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires jQuery");+function(t){"use strict";var n=t.fn.jquery.split(" ")[0].split(".");if(n[0]<2&&n[1]<9||1==n[0]&&9==n[1]&&n[2]<1)throw new Error("Bootstrap's JavaScript requires jQuery version 1.9.1 or higher")}(jQuery),+function(t){"use strict";function n(n){return this.each(function(){var a=t(this),i=a.data("bs.tab");i||a.data("bs.tab",i=new e(this)),"string"==typeof n&&i[n]()})}var e=function(n){this.element=t(n)};e.VERSION="3.3.2",e.TRANSITION_DURATION=150,e.prototype.show=function(){var n=this.element,e=n.closest("ul:not(.dropdown-menu)"),a=n.data("target");if(a||(a=n.attr("href"),a=a&&a.replace(/.*(?=#[^\s]*$)/,"")),!n.parent("li").hasClass("active")){var i=e.find(".active:last a"),r=t.Event("hide.bs.tab",{relatedTarget:n[0]}),s=t.Event("show.bs.tab",{relatedTarget:i[0]});if(i.trigger(r),n.trigger(s),!s.isDefaultPrevented()&&!r.isDefaultPrevented()){var o=t(a);this.activate(n.closest("li"),e),this.activate(o,o.parent(),function(){i.trigger({type:"hidden.bs.tab",relatedTarget:n[0]}),n.trigger({type:"shown.bs.tab",relatedTarget:i[0]})})}}},e.prototype.activate=function(n,a,i){function r(){s.removeClass("active").find("> .dropdown-menu > .active").removeClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!1),n.addClass("active").find('[data-toggle="tab"]').attr("aria-expanded",!0),o?(n[0].offsetWidth,n.addClass("in")):n.removeClass("fade"),n.parent(".dropdown-menu").length&&n.closest("li.dropdown").addClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!0),i&&i()}var s=a.find("> .active"),o=i&&t.support.transition&&(s.length&&s.hasClass("fade")||!!a.find("> .fade").length);s.length&&o?s.one("bsTransitionEnd",r).emulateTransitionEnd(e.TRANSITION_DURATION):r(),s.removeClass("in")};var a=t.fn.tab;t.fn.tab=n,t.fn.tab.Constructor=e,t.fn.tab.noConflict=function(){return t.fn.tab=a,this};var i=function(e){e.preventDefault(),n.call(t(this),"show")};t(document).on("click.bs.tab.data-api",'[data-toggle="tab"]',i).on("click.bs.tab.data-api",'[data-toggle="pill"]',i)}(jQuery),+function(t){"use strict";function n(){var t=document.createElement("bootstrap"),n={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd otransitionend",transition:"transitionend"};for(var e in n)if(void 0!==t.style[e])return{end:n[e]};return!1}t.fn.emulateTransitionEnd=function(n){var e=!1,a=this;t(this).one("bsTransitionEnd",function(){e=!0});var i=function(){e||t(a).trigger(t.support.transition.end)};return setTimeout(i,n),this},t(function(){t.support.transition=n(),t.support.transition&&(t.event.special.bsTransitionEnd={bindType:t.support.transition.end,delegateType:t.support.transition.end,handle:function(n){return t(n.target).is(this)?n.handleObj.handler.apply(this,arguments):void 0}})})}(jQuery);
+if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires jQuery");+function(t){"use strict";var e=t.fn.jquery.split(" ")[0].split(".");if(e[0]<2&&e[1]<9||1==e[0]&&9==e[1]&&e[2]<1)throw new Error("Bootstrap's JavaScript requires jQuery version 1.9.1 or higher")}(jQuery),+function(t){"use strict";function e(e){return this.each(function(){var o=t(this),n=o.data("bs.tooltip"),s="object"==typeof e&&e;(n||!/destroy|hide/.test(e))&&(n||o.data("bs.tooltip",n=new i(this,s)),"string"==typeof e&&n[e]())})}var i=function(t,e){this.type=null,this.options=null,this.enabled=null,this.timeout=null,this.hoverState=null,this.$element=null,this.inState=null,this.init("tooltip",t,e)};i.VERSION="3.3.5",i.TRANSITION_DURATION=150,i.DEFAULTS={animation:!0,placement:"top",selector:!1,template:'<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',trigger:"hover focus",title:"",delay:0,html:!1,container:!1,viewport:{selector:"body",padding:0}},i.prototype.init=function(e,i,o){if(this.enabled=!0,this.type=e,this.$element=t(i),this.options=this.getOptions(o),this.$viewport=this.options.viewport&&t(t.isFunction(this.options.viewport)?this.options.viewport.call(this,this.$element):this.options.viewport.selector||this.options.viewport),this.inState={click:!1,hover:!1,focus:!1},this.$element[0]instanceof document.constructor&&!this.options.selector)throw new Error("`selector` option must be specified when initializing "+this.type+" on the window.document object!");for(var n=this.options.trigger.split(" "),s=n.length;s--;){var r=n[s];if("click"==r)this.$element.on("click."+this.type,this.options.selector,t.proxy(this.toggle,this));else if("manual"!=r){var a="hover"==r?"mouseenter":"focusin",l="hover"==r?"mouseleave":"focusout";this.$element.on(a+"."+this.type,this.options.selector,t.proxy(this.enter,this)),this.$element.on(l+"."+this.type,this.options.selector,t.proxy(this.leave,this))}}this.options.selector?this._options=t.extend({},this.options,{trigger:"manual",selector:""}):this.fixTitle()},i.prototype.getDefaults=function(){return i.DEFAULTS},i.prototype.getOptions=function(e){return e=t.extend({},this.getDefaults(),this.$element.data(),e),e.delay&&"number"==typeof e.delay&&(e.delay={show:e.delay,hide:e.delay}),e},i.prototype.getDelegateOptions=function(){var e={},i=this.getDefaults();return this._options&&t.each(this._options,function(t,o){i[t]!=o&&(e[t]=o)}),e},i.prototype.enter=function(e){var i=e instanceof this.constructor?e:t(e.currentTarget).data("bs."+this.type);return i||(i=new this.constructor(e.currentTarget,this.getDelegateOptions()),t(e.currentTarget).data("bs."+this.type,i)),e instanceof t.Event&&(i.inState["focusin"==e.type?"focus":"hover"]=!0),i.tip().hasClass("in")||"in"==i.hoverState?void(i.hoverState="in"):(clearTimeout(i.timeout),i.hoverState="in",i.options.delay&&i.options.delay.show?void(i.timeout=setTimeout(function(){"in"==i.hoverState&&i.show()},i.options.delay.show)):i.show())},i.prototype.isInStateTrue=function(){for(var t in this.inState)if(this.inState[t])return!0;return!1},i.prototype.leave=function(e){var i=e instanceof this.constructor?e:t(e.currentTarget).data("bs."+this.type);return i||(i=new this.constructor(e.currentTarget,this.getDelegateOptions()),t(e.currentTarget).data("bs."+this.type,i)),e instanceof t.Event&&(i.inState["focusout"==e.type?"focus":"hover"]=!1),i.isInStateTrue()?void 0:(clearTimeout(i.timeout),i.hoverState="out",i.options.delay&&i.options.delay.hide?void(i.timeout=setTimeout(function(){"out"==i.hoverState&&i.hide()},i.options.delay.hide)):i.hide())},i.prototype.show=function(){var e=t.Event("show.bs."+this.type);if(this.hasContent()&&this.enabled){this.$element.trigger(e);var o=t.contains(this.$element[0].ownerDocument.documentElement,this.$element[0]);if(e.isDefaultPrevented()||!o)return;var n=this,s=this.tip(),r=this.getUID(this.type);this.setContent(),s.attr("id",r),this.$element.attr("aria-describedby",r),this.options.animation&&s.addClass("fade");var a="function"==typeof this.options.placement?this.options.placement.call(this,s[0],this.$element[0]):this.options.placement,l=/\s?auto?\s?/i,p=l.test(a);p&&(a=a.replace(l,"")||"top"),s.detach().css({top:0,left:0,display:"block"}).addClass(a).data("bs."+this.type,this),this.options.container?s.appendTo(this.options.container):s.insertAfter(this.$element),this.$element.trigger("inserted.bs."+this.type);var h=this.getPosition(),d=s[0].offsetWidth,f=s[0].offsetHeight;if(p){var u=a,c=this.getPosition(this.$viewport);a="bottom"==a&&h.bottom+f>c.bottom?"top":"top"==a&&h.top-f<c.top?"bottom":"right"==a&&h.right+d>c.width?"left":"left"==a&&h.left-d<c.left?"right":a,s.removeClass(u).addClass(a)}var v=this.getCalculatedOffset(a,h,d,f);this.applyPlacement(v,a);var g=function(){var t=n.hoverState;n.$element.trigger("shown.bs."+n.type),n.hoverState=null,"out"==t&&n.leave(n)};t.support.transition&&this.$tip.hasClass("fade")?s.one("bsTransitionEnd",g).emulateTransitionEnd(i.TRANSITION_DURATION):g()}},i.prototype.applyPlacement=function(e,i){var o=this.tip(),n=o[0].offsetWidth,s=o[0].offsetHeight,r=parseInt(o.css("margin-top"),10),a=parseInt(o.css("margin-left"),10);isNaN(r)&&(r=0),isNaN(a)&&(a=0),e.top+=r,e.left+=a,t.offset.setOffset(o[0],t.extend({using:function(t){o.css({top:Math.round(t.top),left:Math.round(t.left)})}},e),0),o.addClass("in");var l=o[0].offsetWidth,p=o[0].offsetHeight;"top"==i&&p!=s&&(e.top=e.top+s-p);var h=this.getViewportAdjustedDelta(i,e,l,p);h.left?e.left+=h.left:e.top+=h.top;var d=/top|bottom/.test(i),f=d?2*h.left-n+l:2*h.top-s+p,u=d?"offsetWidth":"offsetHeight";o.offset(e),this.replaceArrow(f,o[0][u],d)},i.prototype.replaceArrow=function(t,e,i){this.arrow().css(i?"left":"top",50*(1-t/e)+"%").css(i?"top":"left","")},i.prototype.setContent=function(){var t=this.tip(),e=this.getTitle();t.find(".tooltip-inner")[this.options.html?"html":"text"](e),t.removeClass("fade in top bottom left right")},i.prototype.hide=function(e){function o(){"in"!=n.hoverState&&s.detach(),n.$element.removeAttr("aria-describedby").trigger("hidden.bs."+n.type),e&&e()}var n=this,s=t(this.$tip),r=t.Event("hide.bs."+this.type);return this.$element.trigger(r),r.isDefaultPrevented()?void 0:(s.removeClass("in"),t.support.transition&&s.hasClass("fade")?s.one("bsTransitionEnd",o).emulateTransitionEnd(i.TRANSITION_DURATION):o(),this.hoverState=null,this)},i.prototype.fixTitle=function(){var t=this.$element;(t.attr("title")||"string"!=typeof t.attr("data-original-title"))&&t.attr("data-original-title",t.attr("title")||"").attr("title","")},i.prototype.hasContent=function(){return this.getTitle()},i.prototype.getPosition=function(e){e=e||this.$element;var i=e[0],o="BODY"==i.tagName,n=i.getBoundingClientRect();null==n.width&&(n=t.extend({},n,{width:n.right-n.left,height:n.bottom-n.top}));var s=o?{top:0,left:0}:e.offset(),r={scroll:o?document.documentElement.scrollTop||document.body.scrollTop:e.scrollTop()},a=o?{width:t(window).width(),height:t(window).height()}:null;return t.extend({},n,r,a,s)},i.prototype.getCalculatedOffset=function(t,e,i,o){return"bottom"==t?{top:e.top+e.height,left:e.left+e.width/2-i/2}:"top"==t?{top:e.top-o,left:e.left+e.width/2-i/2}:"left"==t?{top:e.top+e.height/2-o/2,left:e.left-i}:{top:e.top+e.height/2-o/2,left:e.left+e.width}},i.prototype.getViewportAdjustedDelta=function(t,e,i,o){var n={top:0,left:0};if(!this.$viewport)return n;var s=this.options.viewport&&this.options.viewport.padding||0,r=this.getPosition(this.$viewport);if(/right|left/.test(t)){var a=e.top-s-r.scroll,l=e.top+s-r.scroll+o;a<r.top?n.top=r.top-a:l>r.top+r.height&&(n.top=r.top+r.height-l)}else{var p=e.left-s,h=e.left+s+i;p<r.left?n.left=r.left-p:h>r.right&&(n.left=r.left+r.width-h)}return n},i.prototype.getTitle=function(){var t,e=this.$element,i=this.options;return t=e.attr("data-original-title")||("function"==typeof i.title?i.title.call(e[0]):i.title)},i.prototype.getUID=function(t){do t+=~~(1e6*Math.random());while(document.getElementById(t));return t},i.prototype.tip=function(){if(!this.$tip&&(this.$tip=t(this.options.template),1!=this.$tip.length))throw new Error(this.type+" `template` option must consist of exactly 1 top-level element!");return this.$tip},i.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".tooltip-arrow")},i.prototype.enable=function(){this.enabled=!0},i.prototype.disable=function(){this.enabled=!1},i.prototype.toggleEnabled=function(){this.enabled=!this.enabled},i.prototype.toggle=function(e){var i=this;e&&(i=t(e.currentTarget).data("bs."+this.type),i||(i=new this.constructor(e.currentTarget,this.getDelegateOptions()),t(e.currentTarget).data("bs."+this.type,i))),e?(i.inState.click=!i.inState.click,i.isInStateTrue()?i.enter(i):i.leave(i)):i.tip().hasClass("in")?i.leave(i):i.enter(i)},i.prototype.destroy=function(){var t=this;clearTimeout(this.timeout),this.hide(function(){t.$element.off("."+t.type).removeData("bs."+t.type),t.$tip&&t.$tip.detach(),t.$tip=null,t.$arrow=null,t.$viewport=null})};var o=t.fn.tooltip;t.fn.tooltip=e,t.fn.tooltip.Constructor=i,t.fn.tooltip.noConflict=function(){return t.fn.tooltip=o,this}}(jQuery),+function(t){"use strict";function e(e){return this.each(function(){var o=t(this),n=o.data("bs.tab");n||o.data("bs.tab",n=new i(this)),"string"==typeof e&&n[e]()})}var i=function(e){this.element=t(e)};i.VERSION="3.3.5",i.TRANSITION_DURATION=150,i.prototype.show=function(){var e=this.element,i=e.closest("ul:not(.dropdown-menu)"),o=e.data("target");if(o||(o=e.attr("href"),o=o&&o.replace(/.*(?=#[^\s]*$)/,"")),!e.parent("li").hasClass("active")){var n=i.find(".active:last a"),s=t.Event("hide.bs.tab",{relatedTarget:e[0]}),r=t.Event("show.bs.tab",{relatedTarget:n[0]});if(n.trigger(s),e.trigger(r),!r.isDefaultPrevented()&&!s.isDefaultPrevented()){var a=t(o);this.activate(e.closest("li"),i),this.activate(a,a.parent(),function(){n.trigger({type:"hidden.bs.tab",relatedTarget:e[0]}),e.trigger({type:"shown.bs.tab",relatedTarget:n[0]})})}}},i.prototype.activate=function(e,o,n){function s(){r.removeClass("active").find("> .dropdown-menu > .active").removeClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!1),e.addClass("active").find('[data-toggle="tab"]').attr("aria-expanded",!0),a?(e[0].offsetWidth,e.addClass("in")):e.removeClass("fade"),e.parent(".dropdown-menu").length&&e.closest("li.dropdown").addClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!0),n&&n()}var r=o.find("> .active"),a=n&&t.support.transition&&(r.length&&r.hasClass("fade")||!!o.find("> .fade").length);r.length&&a?r.one("bsTransitionEnd",s).emulateTransitionEnd(i.TRANSITION_DURATION):s(),r.removeClass("in")};var o=t.fn.tab;t.fn.tab=e,t.fn.tab.Constructor=i,t.fn.tab.noConflict=function(){return t.fn.tab=o,this};var n=function(i){i.preventDefault(),e.call(t(this),"show")};t(document).on("click.bs.tab.data-api",'[data-toggle="tab"]',n).on("click.bs.tab.data-api",'[data-toggle="pill"]',n)}(jQuery),+function(t){"use strict";function e(){var t=document.createElement("bootstrap"),e={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd otransitionend",transition:"transitionend"};for(var i in e)if(void 0!==t.style[i])return{end:e[i]};return!1}t.fn.emulateTransitionEnd=function(e){var i=!1,o=this;t(this).one("bsTransitionEnd",function(){i=!0});var n=function(){i||t(o).trigger(t.support.transition.end)};return setTimeout(n,e),this},t(function(){t.support.transition=e(),t.support.transition&&(t.event.special.bsTransitionEnd={bindType:t.support.transition.end,delegateType:t.support.transition.end,handle:function(e){return t(e.target).is(this)?e.handleObj.handler.apply(this,arguments):void 0}})})}(jQuery);
 /*
 *	Jquery tablesorter bootstrap 3
 *
 *
 */
 $(function() {
-
 	$.tablesorter.themes.bootstrap = {
 		table      : 'table table-bordered',
 		caption    : 'caption',
@@ -135,7 +148,6 @@ $(function() {
 		even       : '',
 		odd        : ''
 	};
-  
 	$.tablesorter.addParser({
 		id: "sortFloatNumber",
 		is: function (s) {
@@ -146,7 +158,6 @@ $(function() {
 		},
 		type: "numeric"
 	});
-	
 });
 /*
 *	Get min/max from array
@@ -157,9 +168,6 @@ Array.prototype.max = function() {
 Array.prototype.min = function() {
   return Math.min.apply(null, this);
 };
-
-
-
 /*!
  * Sections of code from https://github.com/jimpurbrick/crestexplorerjs, https://github.com/fuzzysteve/CREST-Market-Viewer
  *  Copyright 2012, CCP (http://www.ccpgames.com)
@@ -174,7 +182,7 @@ Array.prototype.min = function() {
  *  All other code is under the MIT license.
  *
 */
-var siteURL = ""; // Must end with  /
+var siteURL = "";
 var crestURL = "https://crest-tq.eveonline.com";
 var staticURL = "https://public-crest.eveonline.com/market/types/";
 
@@ -203,16 +211,6 @@ var downtimeAlert = false;
 	var csrfTokenName = clientId + "csrftoken";
 	var hashTokenName = clientId + "hash";
 	var scopes = "publicData";
-	
-	/*
-	*	Region to fetch [amarr, dodixie, jita, rens, hek]
-	*/
-	var wantedRegion = [10000043, 10000032, 10000002, 10000030, 10000042];
-	/*
-	*	Station to fetch [amarr, dodixie, jita, rens, hek]
-	*/
-	var wantedStation = [60008494, 60011866, 60003760, 60004588, 60005686];
-	var dirtyKey = ['b', 'd', 'a', 'c', 'e'];
 	
 	/*
 	*	Build items list
@@ -340,6 +338,8 @@ var downtimeAlert = false;
 		debugTool('Running openItem('+id+')');
 		var itemHref = crestURL+'/types/'+id+'/';
 		var timeFetch = new Date;
+		var globalVolatility = {};
+		
 		error = false;
 		
 		if(lastFetch != ''){
@@ -382,7 +382,8 @@ var downtimeAlert = false;
 											$.map(data.items,function(item, ii){
 											
 												if(item.location.id == wantedStation[i]){
-													$('.'+dirtyKey[i]+'_buy_show').append('<tr data-station-name="'+item.location.name+'"><td>'+item.price.toCurrencyString()+'</td><td>'+item.volume.toCurrencyQtyString()+'</td><td>'+item.minVolume.toCurrencyQtyString()+'</td><td class="timeleft">'+addDays(item.issued, item.duration)+'</td></tr>');
+													$('.'+dirtyKey[i]+'_buy_show').append('<tr><td>'+item.price.toCurrencyString()+'</td><td>'+item.volume.toCurrencyQtyString()+'</td><td>'+item.minVolume.toCurrencyQtyString()+'</td><td class="timeleft">'+addDays(item.issued, item.duration)+'</td></tr>');
+													$('.all_buy_show').append('<tr><td>'+item.location.name+'</td><td>'+item.price.toCurrencyString()+'</td><td>'+item.volume.toCurrencyQtyString()+'</td><td>'+item.minVolume.toCurrencyQtyString()+'</td><td class="timeleft">'+addDays(item.issued, item.duration)+'</td></tr>');
 												}
 											});
 											$('.'+dirtyKey[i]+'_buy_show').parent().parent().find('table.sortPrice').tablesorter({
@@ -409,8 +410,47 @@ var downtimeAlert = false;
 												}
 												initCountdown('#'+dirtyKey[i]+'_buy_table');
 											});
+											
+											
 										});
 										getBestItem();
+										setTimeout(function(){
+										
+											/*
+											*	One page
+											*/
+											$('#all_buy .container-loader').html('<img src="img/loading.gif" class="loader-img" alt="loader"/>').fadeIn(250, function(){
+												$('#all_buy .container-loader img').fadeOut('fast', function(){
+												
+													$('#all_buy .container-loader').html('');
+													$('.all_buy_show').parent().parent().find('table.sortPrice').tablesorter({
+														theme : "bootstrap",
+														widthFixed: true,
+														headers: { 
+															1: { sorter: 'sortFloatNumber'}
+														},
+														headerTemplate : '{content} {icon}',
+														widgets : [ "uitheme", "zebra" ],
+														widgetOptions : {
+															zebra : ["even", "odd"],
+															filter_reset : ".reset"
+														},
+														sortList: [[1,1]] 
+													});
+													$('.all_buy_show').parent().parent().find('table.sortPrice').trigger("update");
+													$('#all_buy_table').fadeIn(500, function(){
+													
+														var contener = $('#all_buy_table').parent();
+														if($(contener).hasClass('active')){
+															var height = $(contener).parent().parent().height();
+															$(contener).parent().parent().parent().find('.sideTabs').css('height', height);
+														}
+														// initCountdown('#all_buy_table');
+													});
+												});
+											});
+										
+										}, 800);
 										
 									}
 								
@@ -436,7 +476,8 @@ var downtimeAlert = false;
 											$.map(data.items,function(item, ii){
 
 												if(item.location.id == wantedStation[i]){
-													$('.'+dirtyKey[i]+'_sell_show').append('<tr data-station-name="'+item.location.name+'"><td>'+item.price.toCurrencyString()+'</td><td>'+item.volume.toCurrencyQtyString()+'</td><td class="timeleft">'+addDays(item.issued, item.duration)+'</td></tr>');
+													$('.'+dirtyKey[i]+'_sell_show').append('<tr><td>'+item.price.toCurrencyString()+'</td><td>'+item.volume.toCurrencyQtyString()+'</td><td class="timeleft">'+addDays(item.issued, item.duration)+'</td></tr>');
+													$('.all_sell_show').append('<tr><td>'+item.location.name+'</td><td>'+item.price.toCurrencyString()+'</td><td>'+item.volume.toCurrencyQtyString()+'</td><td class="timeleft">'+addDays(item.issued, item.duration)+'</td></tr>');
 												}
 											});
 											$('.'+dirtyKey[i]+'_sell_show').parent().parent().find('table.sortPrice').tablesorter({
@@ -463,8 +504,48 @@ var downtimeAlert = false;
 												}
 												initCountdown('#'+dirtyKey[i]+'_sell_table');
 											});
+											
+											
 										});
 										getBestItem();
+										setTimeout(function(){
+										
+											/*
+											*	One page
+											*/
+											$('#all_sell .container-loader').html('<img src="img/loading.gif" class="loader-img" alt="loader"/>').fadeIn(250, function(){
+												$('#all_sell .container-loader img').fadeOut('fast', function(){
+												
+													$('#all_sell .container-loader').html('');
+													$('.all_sell_show').parent().parent().find('table.sortPrice').tablesorter({
+														theme : "bootstrap",
+														widthFixed: true,
+														headers: { 
+															1: { sorter: 'sortFloatNumber'},
+														},
+														headerTemplate : '{content} {icon}',
+														widgets : [ "uitheme", "zebra" ],
+														widgetOptions : {
+															zebra : ["even", "odd"],
+															filter_reset : ".reset"
+														},
+														sortList: [[1,0]] 
+													});
+													$('.all_sell_show').parent().parent().find('table.sortPrice').trigger("update");
+													$('#all_sell_table').fadeIn(500, function(){
+													
+														var contener = $('#all_sell_table').parent();
+														if($(contener).hasClass('active')){
+															var height = $(contener).parent().parent().height();
+															$(contener).parent().parent().parent().find('.sideTabs').css('height', height);
+														}
+														// initCountdown('#all_sell_table');
+													});
+												});
+											});
+										
+										
+										}, 800);
 										
 									}
 									
@@ -517,6 +598,45 @@ var downtimeAlert = false;
 													$(contener).parent().parent().parent().find('.sideTabs').css('height', height);
 												}
 											});
+											
+											
+											$('#'+dirtyKey[i]+'_volatility .container-loader').html('<img src="img/loading.gif" class="loader-img" alt="loader"/>').fadeIn(250, function(){
+												$('#'+dirtyKey[i]+'_volatility .container-loader img').fadeOut('fast', function(){
+													var volatility = getVolatility(history);
+													globalVolatility[dirtyKey[i]] = volatility;
+													
+													$('#'+dirtyKey[i]+'_volatility_10days').find('.volatility-high').html(volatility.days10.high.toCurrencyQtyString());
+													var medianBar = parseFloat(volatility.days10.percentage * 250) / 100;
+													$('#'+dirtyKey[i]+'_volatility_10days').find('.volatility-bar-median').css('margin-bottom', medianBar+'px').attr('title', volatility.days10.avg.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_10days').find('.volatility-min').html(volatility.days10.min.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_10days').find('.volatility-orders').html(volatility.days10.order.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_10days').find('.volatility-volume').html(volatility.days10.volume.toCurrencyQtyString());
+													
+													$('#'+dirtyKey[i]+'_volatility_1month').find('.volatility-high').html(volatility.month1.high.toCurrencyQtyString());
+													var medianBar = parseFloat(volatility.month1.percentage * 250) / 100;
+													$('#'+dirtyKey[i]+'_volatility_1month').find('.volatility-bar-median').css('margin-bottom', medianBar+'px').attr('title', volatility.month1.avg.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_1month').find('.volatility-min').html(volatility.month1.min.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_1month').find('.volatility-orders').html(volatility.month1.order.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_1month').find('.volatility-volume').html(volatility.month1.volume.toCurrencyQtyString());
+													
+													$('#'+dirtyKey[i]+'_volatility_3months').find('.volatility-high').html(volatility.month3.high.toCurrencyQtyString());
+													var medianBar = parseFloat(volatility.month3.percentage * 250) / 100;
+													$('#'+dirtyKey[i]+'_volatility_3months').find('.volatility-bar-median').css('margin-bottom', medianBar+'px').attr('title', volatility.month3.avg.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_3months').find('.volatility-min').html(volatility.month3.min.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_3months').find('.volatility-orders').html(volatility.month3.order.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_3months').find('.volatility-volume').html(volatility.month3.volume.toCurrencyQtyString());
+													
+													$('#'+dirtyKey[i]+'_volatility_1year').find('.volatility-high').html(volatility.year1.high.toCurrencyQtyString());
+													var medianBar = parseFloat(volatility.year1.percentage * 250) / 100;
+													$('#'+dirtyKey[i]+'_volatility_1year').find('.volatility-bar-median').css('margin-bottom', medianBar+'px').attr('title', volatility.year1.avg.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_1year').find('.volatility-min').html(volatility.year1.min.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_1year').find('.volatility-orders').html(volatility.year1.order.toCurrencyQtyString());
+													$('#'+dirtyKey[i]+'_volatility_1year').find('.volatility-volume').html(volatility.year1.volume.toCurrencyQtyString());
+													
+											
+												});
+											});
+											
 										});
 										getBestItem();
 									}
@@ -529,6 +649,15 @@ var downtimeAlert = false;
 					
 					}, 200 * i);
 				});
+				
+				setTimeout(function(){
+					$('.all_sell_show').parent().parent().find('table.sortPrice').trigger("update");
+					$('.all_buy_show').parent().parent().find('table.sortPrice').trigger("update");
+					initCountdown('#all_sell_table');
+					initCountdown('#all_buy_table');
+					setGlobalVolatility(globalVolatility);
+					
+				}, 2000);
 			
 			}else{
 				displayError('Item ID is missing');
@@ -669,6 +798,289 @@ var downtimeAlert = false;
 			}
 		
 		}, 500);
+
+	}
+	
+	
+	/*
+	*	Get volatility
+	*/
+	function getVolatility(data){
+	
+		debugTool('Running getVolatility()');
+		var volatility10days = {
+			'low' : [],
+			'avg' : [],
+			'high' : [],
+			'volume' : [],
+			'order' : []
+		};
+		var volatility1month = {
+			'low' : [],
+			'avg' : [],
+			'high' : [],
+			'volume' : [],
+			'order' : []
+		};
+		var volatility3months = {
+			'low' : [],
+			'avg' : [],
+			'high' : [],
+			'volume' : [],
+			'order' : []
+		};
+		var volatility1year = {
+			'low' : [],
+			'avg' : [],
+			'high' : [],
+			'volume' : [],
+			'order' : []
+		};
+		
+		$.map(data,function(item, i){
+
+			if(i <= 9){
+			
+				volatility10days.low[volatility10days.low.length] = item.lowPrice;
+				volatility10days.avg[volatility10days.avg.length] = item.avgPrice;
+				volatility10days.high[volatility10days.high.length] = item.highPrice;
+				volatility10days.volume[volatility10days.volume.length] = item.volume;
+				volatility10days.order[volatility10days.order.length] = item.orderCount;
+				
+				volatility1month.low[volatility1month.low.length] = item.lowPrice;
+				volatility1month.avg[volatility1month.avg.length] = item.avgPrice;
+				volatility1month.high[volatility1month.high.length] = item.highPrice;
+				volatility1month.volume[volatility1month.volume.length] = item.volume;
+				volatility1month.order[volatility1month.order.length] = item.orderCount;
+				
+				volatility3months.low[volatility3months.low.length] = item.lowPrice;
+				volatility3months.avg[volatility3months.avg.length] = item.avgPrice;
+				volatility3months.high[volatility3months.high.length] = item.highPrice;
+				volatility3months.volume[volatility3months.volume.length] = item.volume;
+				volatility3months.order[volatility3months.order.length] = item.orderCount;
+				
+				volatility1year.low[volatility1year.low.length] = item.lowPrice;
+				volatility1year.avg[volatility1year.avg.length] = item.avgPrice;
+				volatility1year.high[volatility1year.high.length] = item.highPrice;
+				volatility1year.volume[volatility1year.volume.length] = item.volume;
+				volatility1year.order[volatility1year.order.length] = item.orderCount;
+				
+				
+			
+			}else if(i > 9 && i <= 29){
+			
+				volatility1month.low[volatility1month.low.length] = item.lowPrice;
+				volatility1month.avg[volatility1month.avg.length] = item.avgPrice;
+				volatility1month.high[volatility1month.high.length] = item.highPrice;
+				volatility1month.volume[volatility1month.volume.length] = item.volume;
+				volatility1month.order[volatility1month.order.length] = item.orderCount;
+				
+				volatility3months.low[volatility3months.low.length] = item.lowPrice;
+				volatility3months.avg[volatility3months.avg.length] = item.avgPrice;
+				volatility3months.high[volatility3months.high.length] = item.highPrice;
+				volatility3months.volume[volatility3months.volume.length] = item.volume;
+				volatility3months.order[volatility3months.order.length] = item.orderCount;
+				
+				volatility1year.low[volatility1year.low.length] = item.lowPrice;
+				volatility1year.avg[volatility1year.avg.length] = item.avgPrice;
+				volatility1year.high[volatility1year.high.length] = item.highPrice;
+				volatility1year.volume[volatility1year.volume.length] = item.volume;
+				volatility1year.order[volatility1year.order.length] = item.orderCount;
+				
+			
+			}else if(i > 29 && i <= 89){
+			
+				volatility3months.low[volatility3months.low.length] = item.lowPrice;
+				volatility3months.avg[volatility3months.avg.length] = item.avgPrice;
+				volatility3months.high[volatility3months.high.length] = item.highPrice;
+				volatility3months.volume[volatility3months.volume.length] = item.volume;
+				volatility3months.order[volatility3months.order.length] = item.orderCount;
+				
+				volatility1year.low[volatility1year.low.length] = item.lowPrice;
+				volatility1year.avg[volatility1year.avg.length] = item.avgPrice;
+				volatility1year.high[volatility1year.high.length] = item.highPrice;
+				volatility1year.volume[volatility1year.volume.length] = item.volume;
+				volatility1year.order[volatility1year.order.length] = item.orderCount;
+			
+			
+			}else if(i > 89 && i <= 364){
+			
+				volatility1year.low[volatility1year.low.length] = item.lowPrice;
+				volatility1year.avg[volatility1year.avg.length] = item.avgPrice;
+				volatility1year.high[volatility1year.high.length] = item.highPrice;
+				volatility1year.volume[volatility1year.volume.length] = item.volume;
+				volatility1year.order[volatility1year.order.length] = item.orderCount;
+			
+			}
+
+		});
+		
+		var median = {
+		
+			'days10' : {
+				'min' : getMedian(volatility10days.low),
+				'avg' : getMedian(volatility10days.avg),
+				'high' : getMedian(volatility10days.high),
+				'percentage' : parseFloat(100 * getMedian(volatility10days.avg)) / parseFloat(getMedian(volatility10days.high)),
+				'volume' : getMedian(volatility10days.volume),
+				'order' : getMedian(volatility10days.order)
+			},
+			'month1' : {
+				'min' : getMedian(volatility1month.low),
+				'avg' : getMedian(volatility1month.avg),
+				'high' : getMedian(volatility1month.high),
+				'percentage' : parseFloat(100 * getMedian(volatility1month.avg)) / parseFloat(getMedian(volatility1month.high)),
+				'volume' : getMedian(volatility1month.volume),
+				'order' : getMedian(volatility1month.order)
+			},
+			'month3' : {
+				'min' : getMedian(volatility3months.low),
+				'avg' : getMedian(volatility3months.avg),
+				'high' : getMedian(volatility3months.high),
+				'percentage' : parseFloat(100 * getMedian(volatility3months.avg)) / parseFloat(getMedian(volatility3months.high)),
+				'volume' : getMedian(volatility3months.volume),
+				'order' : getMedian(volatility3months.order)
+			},
+			'year1' : {
+				'min' : getMedian(volatility1year.low),
+				'avg' : getMedian(volatility1year.avg),
+				'high' : getMedian(volatility1year.high),
+				'percentage' : parseFloat(100 * getMedian(volatility1year.avg)) / parseFloat(getMedian(volatility1year.high)),
+				'volume' : getMedian(volatility1year.volume),
+				'order' : getMedian(volatility1year.order)
+			}
+		
+		}
+		return median;
+
+	}
+	
+	
+	function setGlobalVolatility(data){
+	
+		debugTool('Running getVolatility()');
+		var volatility10days = {
+			'low' : [],
+			'avg' : [],
+			'high' : [],
+			'volume' : [],
+			'order' : []
+		};
+		var volatility1month = {
+			'low' : [],
+			'avg' : [],
+			'high' : [],
+			'volume' : [],
+			'order' : []
+		};
+		var volatility3months = {
+			'low' : [],
+			'avg' : [],
+			'high' : [],
+			'volume' : [],
+			'order' : []
+		};
+		var volatility1year = {
+			'low' : [],
+			'avg' : [],
+			'high' : [],
+			'volume' : [],
+			'order' : []
+		};
+		
+		$.map(data,function(item, i){
+		
+		
+			volatility10days.low[volatility10days.low.length] = item.days10.min;
+			volatility10days.avg[volatility10days.avg.length] = item.days10.avg;
+			volatility10days.high[volatility10days.high.length] = item.days10.high;
+			volatility10days.volume[volatility10days.volume.length] = item.days10.volume;
+			volatility10days.order[volatility10days.order.length] = item.days10.order;
+			
+			volatility1month.low[volatility1month.low.length] = item.month1.min;
+			volatility1month.avg[volatility1month.avg.length] = item.month1.avg;
+			volatility1month.high[volatility1month.high.length] = item.month1.high;
+			volatility1month.volume[volatility1month.volume.length] = item.month1.volume;
+			volatility1month.order[volatility1month.order.length] = item.month1.order;
+			
+			volatility3months.low[volatility3months.low.length] = item.month3.min;
+			volatility3months.avg[volatility3months.avg.length] = item.month3.avg;
+			volatility3months.high[volatility3months.high.length] = item.month3.high;
+			volatility3months.volume[volatility3months.volume.length] = item.month3.volume;
+			volatility3months.order[volatility3months.order.length] = item.month3.order;
+			
+			volatility1year.low[volatility1year.low.length] = item.year1.min;
+			volatility1year.avg[volatility1year.avg.length] = item.year1.avg;
+			volatility1year.high[volatility1year.high.length] = item.year1.high;
+			volatility1year.volume[volatility1year.volume.length] = item.year1.volume;
+			volatility1year.order[volatility1year.order.length] = item.year1.order;
+		
+		});
+		
+		var median = {
+		
+			'days10' : {
+				'min' : getMedian(volatility10days.low),
+				'avg' : getMedian(volatility10days.avg),
+				'high' : getMedian(volatility10days.high),
+				'percentage' : parseFloat(100 * getMedian(volatility10days.avg)) / parseFloat(getMedian(volatility10days.high)),
+				'volume' : getMedian(volatility10days.volume),
+				'order' : getMedian(volatility10days.order)
+			},
+			'month1' : {
+				'min' : getMedian(volatility1month.low),
+				'avg' : getMedian(volatility1month.avg),
+				'high' : getMedian(volatility1month.high),
+				'percentage' : parseFloat(100 * getMedian(volatility1month.avg)) / parseFloat(getMedian(volatility1month.high)),
+				'volume' : getMedian(volatility1month.volume),
+				'order' : getMedian(volatility1month.order)
+			},
+			'month3' : {
+				'min' : getMedian(volatility3months.low),
+				'avg' : getMedian(volatility3months.avg),
+				'high' : getMedian(volatility3months.high),
+				'percentage' : parseFloat(100 * getMedian(volatility3months.avg)) / parseFloat(getMedian(volatility3months.high)),
+				'volume' : getMedian(volatility3months.volume),
+				'order' : getMedian(volatility3months.order)
+			},
+			'year1' : {
+				'min' : getMedian(volatility1year.low),
+				'avg' : getMedian(volatility1year.avg),
+				'high' : getMedian(volatility1year.high),
+				'percentage' : parseFloat(100 * getMedian(volatility1year.avg)) / parseFloat(getMedian(volatility1year.high)),
+				'volume' : getMedian(volatility1year.volume),
+				'order' : getMedian(volatility1year.order)
+			}
+		
+		}
+		
+		$('#all_volatility_10days').find('.volatility-high').html(median.days10.high.toCurrencyQtyString());
+		var medianBar = parseFloat(median.days10.percentage * 250) / 100;
+		$('#all_volatility_10days').find('.volatility-bar-median').css('margin-bottom', medianBar+'px').attr('title', median.days10.avg.toCurrencyQtyString());
+		$('#all_volatility_10days').find('.volatility-min').html(median.days10.min.toCurrencyQtyString());
+		$('#all_volatility_10days').find('.volatility-orders').html(median.days10.order.toCurrencyQtyString());
+		$('#all_volatility_10days').find('.volatility-volume').html(median.days10.volume.toCurrencyQtyString());
+		
+		$('#all_volatility_1month').find('.volatility-high').html(median.month1.high.toCurrencyQtyString());
+		var medianBar = parseFloat(median.month1.percentage * 250) / 100;
+		$('#all_volatility_1month').find('.volatility-bar-median').css('margin-bottom', medianBar+'px').attr('title', median.month1.avg.toCurrencyQtyString());
+		$('#all_volatility_1month').find('.volatility-min').html(median.month1.min.toCurrencyQtyString());
+		$('#all_volatility_1month').find('.volatility-orders').html(median.month1.order.toCurrencyQtyString());
+		$('#all_volatility_1month').find('.volatility-volume').html(median.month1.volume.toCurrencyQtyString());
+		
+		$('#all_volatility_3months').find('.volatility-high').html(median.month3.high.toCurrencyQtyString());
+		var medianBar = parseFloat(median.month3.percentage * 250) / 100;
+		$('#all_volatility_3months').find('.volatility-bar-median').css('margin-bottom', medianBar+'px').attr('title', median.month3.avg.toCurrencyQtyString());
+		$('#all_volatility_3months').find('.volatility-min').html(median.month3.min.toCurrencyQtyString());
+		$('#all_volatility_3months').find('.volatility-orders').html(median.month3.order.toCurrencyQtyString());
+		$('#all_volatility_3months').find('.volatility-volume').html(median.month3.volume.toCurrencyQtyString());		
+		
+		$('#all_volatility_1year').find('.volatility-high').html(median.year1.high.toCurrencyQtyString());
+		var medianBar = parseFloat(median.year1.percentage * 250) / 100;
+		$('#all_volatility_1year').find('.volatility-bar-median').css('margin-bottom', medianBar+'px').attr('title', median.year1.avg.toCurrencyQtyString());
+		$('#all_volatility_1year').find('.volatility-min').html(median.year1.min.toCurrencyQtyString());
+		$('#all_volatility_1year').find('.volatility-orders').html(median.year1.order.toCurrencyQtyString());
+		$('#all_volatility_1year').find('.volatility-volume').html(median.year1.volume.toCurrencyQtyString());
 
 	}
 	
@@ -1038,6 +1450,10 @@ $(document).ready(function() {
 		if(height > minHeight)
 			$(e.target).parent().parent().css('height', height);
 		
+	});
+	
+	$('body').tooltip({
+		selector: '[rel=tooltip]'
 	});
 	
 
