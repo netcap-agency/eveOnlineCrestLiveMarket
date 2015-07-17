@@ -565,10 +565,10 @@ _______________________________________________________________
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-8">
-					wantedBang&copy; <?php echo date('Y');?> | Data from <a href="https://zkillboard.com/">zkillboard</a> and <a href="https://public-crest.eveonline.com/">eveonline CREST API | Hub.isk source could be found on <a href="https://github.com/netcap-agency/eveOnlineCrestLiveMarket">github</a></a>
+					Hub.isk&copy; <?php echo date('Y');?> | Data from <a href="https://public-crest.eveonline.com/">eveonline CREST API | Hub.isk source can be found on <a href="https://github.com/netcap-agency/eveOnlineCrestLiveMarket">github</a></a>
 				</div>
 				<div class="col-xs-12 col-sm-12 col-md-4">
-					<span class="pull-right">Fitting par <a href="http:/netcap.fr/">netcap</a></span>
+					<span class="pull-right"><a href="http:/netcap.fr/">netcap</a></span>
 				</div>
 			</div>
 		</div>
