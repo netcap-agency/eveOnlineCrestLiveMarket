@@ -179,7 +179,6 @@ Array.prototype.min = function() {
  *  All other code is under the MIT license.
  *
 */
-var siteURL = "";
 var crestURL = "https://crest-tq.eveonline.com";
 var staticURL = "https://public-crest.eveonline.com/market/types/";
 
@@ -203,8 +202,6 @@ var downtimeAlert = false;
 (function ($, window, document) {
 
 	"use strict";
-
-	var clientId = ""; // OAuth client id
 	var csrfTokenName = clientId + "csrftoken";
 	var hashTokenName = clientId + "hash";
 	var scopes = "publicData";

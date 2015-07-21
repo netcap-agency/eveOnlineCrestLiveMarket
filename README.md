@@ -13,20 +13,20 @@ A server, php and an eve online account.
 
 You will also need to generate an app token on https://developers.eveonline.com/
 
-The generated Client ID should be paste line 207 in js/app.js
+The generated Client ID should be paste in config.json
 
 **Don't forget to link to your website for the callback url !**
 
 
 # Installation
 
-Edit js/app.js
-* Add your domain name line 182 in var siteURL = "";
-* Add your clientID line 207 in var clientId = "";
+Edit config.json
 
 Upload the files to your server. Take care to let xdr-min.js on the root of the project in order to allow cross domain request.
 
 The app also include a simple debug tool in order to perform debug into the eve online browser. This function can be a lot better but is sufficient to me.
+
+You can also add station to be checked, just fill the right informations
 
 
 # Problems

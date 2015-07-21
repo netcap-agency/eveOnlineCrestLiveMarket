@@ -90,13 +90,14 @@ _______________________________________________________________
 		$javascript_region = array();
 		$javascript_station = array();
 		$javascript_key = array();
-		foreach($systems as $system => $info){
+		foreach($systems['systems'] as $system => $info){
 			$javascript_region[] = $info['region'];
 			$javascript_station[] = $info['id'];
 			$javascript_key[] = "'".$system."'";
 		}
 		?>
-		
+		var siteURL = "<?php echo $systems['siteURL'];?>";
+		var clientId = "<?php echo $systems['clientId'];?>";
 		/*
 		*	Region to fetch
 		*/
