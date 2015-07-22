@@ -1,31 +1,12 @@
 <?php
+require dirname(__FILE__).'/hubisk.php';
+$hubisk = new hubisk();
+/*
+*	Check eve online server status
+*/
 if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' ) ){
-	if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['do']) && $_GET['do']=='server_status'){
-
-		$url = 'https://api.eveonline.com/server/ServerStatus.xml.aspx';
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_URL, $url);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		/*
-		*	Parse json
-		*
-		*/
-		$response = simplexml_load_string(trim($data));
-		header('Cache-Control: no-cache, must-revalidate');
-		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-		header('Content-type: application/json');
-		echo json_encode(array(
-			'time' => (string)$response->currentTime, 
-			'status' => (string)$response->result->serverOpen, 
-			'nbPlayer' => (string)$response->result->onlinePlayers
-		));
-		die();
-
-	}
+	$hubisk->eveStatus();
 }
-$systems = json_decode(file_get_contents(dirname(__FILE__).'/config.json'), true);
 ?>
 <!DOCTYPE html>
 <!--
@@ -86,30 +67,20 @@ _______________________________________________________________
 				CCPEVE.requestTrust(redirectUri);
 			}
 		}
-		<?php 
-		$javascript_region = array();
-		$javascript_station = array();
-		$javascript_key = array();
-		foreach($systems['systems'] as $system => $info){
-			$javascript_region[] = $info['region'];
-			$javascript_station[] = $info['id'];
-			$javascript_key[] = "'".$system."'";
-		}
-		?>
-		var siteURL = "<?php echo $systems['siteURL'];?>";
-		var clientId = "<?php echo $systems['clientId'];?>";
+		var siteURL = "<?php echo $hubisk->siteURL;?>";
+		var clientId = "<?php echo $hubisk->clientId;?>";
 		/*
 		*	Region to fetch
 		*/
-		var wantedRegion = [<?php echo implode(', ', $javascript_region);?>];
+		var wantedRegion = [<?php echo $hubisk->regions;?>];
 		/*
 		*	Station to fetch
 		*/
-		var wantedStation = [<?php echo implode(', ', $javascript_station);?>];
+		var wantedStation = [<?php echo $hubisk->stations;?>];
 		/*
 		*	Shortname
 		*/
-		var dirtyKey = [<?php echo implode(', ', $javascript_key);?>];
+		var dirtyKey = [<?php echo $hubisk->systemKey;?>];
 	</script>
 	<script src="js/app.js?v=1"></script>
 </head>
@@ -208,7 +179,7 @@ _______________________________________________________________
 					
 						<ul class="nav nav-tabs mainTabs" role="tablist">
 							<?php 
-							foreach($systems as $system => $info){
+							foreach($hubisk->systems as $system => $info){
 							?>
 							<li role="presentation"<?php if($system == 'jita'){echo ' class="active"';}?>><a href="#<?php echo $system;?>" title="<?php echo $info['shortname'];?>" aria-controls="<?php echo $system;?>" role="tab" data-toggle="tab"><?php echo $info['shortname'];?></a></li>
 							<?php
@@ -217,12 +188,12 @@ _______________________________________________________________
 							<!---
 							<li role="presentation"><a class="custom-marketplace" href="#custom" aria-controls="custom" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-plus"></i></a></li>
 							-->
-							<li class="pull-right" role="presentation"><a href="#all_in_one" aria-controls="all_in_one" role="tab" data-toggle="tab">OnePage <sup>beta</sup></a></li>
+							<li class="pull-right" role="presentation"><a href="#all_in_one" aria-controls="all_in_one" role="tab" data-toggle="tab">OnePage</a></li>
 						</ul>
 						<div class="tab-content mainContentTabs">
 					
 							<?php 
-							foreach($systems as $system => $info){
+							foreach($hubisk->systems as $system => $info){
 							?>
 							<!-- <?php echo $system;?> -->
 							<div role="tabpanel" class="tab-pane fade<?php if($system == 'jita'){echo 'in active';};?>" id="<?php echo $system;?>">
@@ -409,7 +380,7 @@ _______________________________________________________________
 											</ul>
 										</div>
 										<div class="col-md-10 contentTabs">
-											<h2>OnePage <sup>beta</sup></h2>
+											<h2>OnePage</h2>
 											<div class="tab-content">
 												<!-- items sell order -->
 												<div role="tabpanel" class="tab-pane fade in active" id="all_sell">
